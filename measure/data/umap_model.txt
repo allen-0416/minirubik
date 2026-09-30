@@ -1,0 +1,3 @@
+1048576 nodes=1048576 buckets=1447153 node_sz=24 dRSS=44144 KB  B/byte=43.11  buckets_B/byte=11.04
+4194304 nodes=4194304 buckets=5967347 node_sz=24 dRSS=177652 KB  B/byte=43.37  buckets_B/byte=11.38
+16777216 nodes=16777216 buckets=24607243 node_sz=24 dRSS=716392 KB  B/byte=43.73  buckets_B/byte=11.73
