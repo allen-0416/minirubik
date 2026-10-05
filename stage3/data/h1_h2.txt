@@ -1,0 +1,15 @@
+H2 perm_move[0]: in range, bijective, ^4 = id           ok
+H2 perm_move[1]: in range, bijective, ^4 = id           ok
+H2 perm_move[2]: in range, bijective, ^4 = id           ok
+H2 ori_move[0]: in range, bijective, ^4 = id            ok
+H2 ori_move[1]: in range, bijective, ^4 = id            ok
+H2 ori_move[2]: in range, bijective, ^4 = id            ok
+H2 pdb_p: all 5040 entries populated                    ok
+H2 pdb_p: solved entry 0, no other 0                    ok
+H2 pdb_p: max 7 = reference BFS depth 7                 ok
+H2 pdb_o: all 729 entries populated                     ok
+H2 pdb_o: solved entry 0, no other 0                    ok
+H2 pdb_o: max 6 = reference BFS depth 6                 ok
+H1 mean h at d = 11: 5.405 over 2644 states
+H1: h <= d over all 3,674,160 states                    ok
+H1 and H2 passed; wrote tables.s (40383 B of tables)
