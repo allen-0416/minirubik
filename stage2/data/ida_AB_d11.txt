@@ -1,0 +1,2 @@
+passed: 2644 states, 0 failures, 39.81 s wall clock
+expanded nodes per state: min 23485, median 31956, mean 34438.9, max 106635 (54721631111111)

@@ -4,3 +4,16 @@
 solver
 mini
 measure/umap_model
+
+# Stage 2-4 build outputs (rebuilt by each stage's Makefile)
+*.o
+*.elf
+stage2/oracle
+stage2/compat
+stage2/survey
+stage2/check-*
+stage2/out/
+stage3/gen_tables
+stage3/solver_own
+stage3/practice/ex[0-9]
+stage4/input.s
