@@ -1,4 +1,4 @@
-/* solver_own.c -- Stage 3 final C: optimal 2x2x2 solver by IDA* (author's own)
+/* solver_ida.c -- Stage 3 final C: optimal 2x2x2 solver by IDA* (author's own)
  *
  * Authorship. The search (my_h, frame_t, my_search, my_solve), the ranking
  * (my_rank_perm, my_rank_ori), and the table builders (practice/my_tables.h,
@@ -9,8 +9,8 @@
  *
  * Two builds from this one file:
  *
- *   Host:   cc -O2 -std=c99 solver_own.c -o solver_own
- *           ./solver_own 21345671111111
+ *   Host:   cc -O2 -std=c99 solver_ida.c -o solver_ida
+ *           ./solver_ida 21345671111111
  *       Builds the tables at start-up with the author's builders, same
  *       input/output as ../solver.c.
  *
@@ -279,7 +279,7 @@ int main(int argc, char **argv)
     uint8_t p[CUBIES], o[CUBIES], path[11];
     if (argc != 2 || !parse_state(argv[1], p, o)) {
         fprintf(stderr, "usage: %s PPPPPPPOOOOOOO\n",
-                argc > 0 && argv[0] ? argv[0] : "solver_own");
+                argc > 0 && argv[0] ? argv[0] : "solver_ida");
         return 2;
     }
     my_init_tables();

@@ -1,1 +1,1 @@
-H3: 3674160 states, 0 failed, max expanded 106635 (rank 2437047), 445.0 s
+H3: 3674160 states, 0 failed, max expanded 106635 (rank 2437047), 218.4 s

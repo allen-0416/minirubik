@@ -14,6 +14,7 @@ stage2/survey
 stage2/check-*
 stage2/out/
 stage3/gen_tables
-stage3/solver_own
+stage3/solver_ida
 stage3/practice/ex[0-9]
 stage4/input.s
+stage2/variants/

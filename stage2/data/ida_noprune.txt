@@ -1,0 +1,6 @@
+d = 3, h = 0, length = 3, expanded = 238, optimal
+R2 B2 R'
+d = 5, h = 0, length = 5, expanded = 29273, optimal
+R' D2 B' R D'
+d = 7, h = 0, length = 7, expanded = 5839741, optimal
+D' B' D2 R B D2 R'
