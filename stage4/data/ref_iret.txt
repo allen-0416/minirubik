@@ -1,0 +1,10 @@
+# gcc -O2 -march=rv32i reference build of stage3/solver_ida.c on Ripes RV32_ISS (--iret)
+.text                1136    65716
+.rodata             40503    66852
+.data                  15   111451
+.bss                  132   111468
+static data: 40650 B
+12345671111111 421
+76352141113232 1067
+21345671111111 14719998
+54721631111111 40250104
