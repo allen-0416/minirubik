@@ -1,5 +1,5 @@
-build solver on RV32_ISS: 2644 distance-11 states, 732 s wall clock
-retired instructions: min 7317928, median 9954297, mean 10733644, max 33212463 (54721631111111)
+build solver on RV32_ISS: 2644 distance-11 states, 308 s wall clock
+retired instructions: min 7317939, median 9954308, mean 10733656, max 33212474 (54721631111111)
 budget 5e7: 0 over; worst case uses 66.4% of it
 exit code != 0: 0; length != 11: 0; differs from solver_ida: 0
 PASS

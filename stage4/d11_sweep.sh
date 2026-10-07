@@ -5,7 +5,8 @@
 #
 #   solver  the hand-written assembly (default), from solver.s
 #   ref     the gcc -O2 reference build of ../stage3/solver_ida.c
-#   JOBS    parallel Ripes processes (default: number of CPUs)
+#   JOBS    parallel Ripes processes (default: half the CPUs, at least 1,
+#           so the machine stays responsive; every Ripes runs under nice)
 #   LIMIT   only the first LIMIT states (default: all 2,644)
 #
 # The pass condition is a worst case over all 2,644 distance-11 states:
@@ -22,7 +23,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 BUILD=${1:-solver}
-JOBS=${2:-$(nproc)}
+JOBS=${2:-$(( $(nproc) / 2 > 0 ? $(nproc) / 2 : 1 ))}
 LIMIT=${3:-0}
 PROC=${PROC:-RV32_ISS}
 BUDGET=50000000
@@ -52,11 +53,11 @@ run_one() {
     printf '    .data\n    .globl input\ninput:\n    .string "%s"\n' \
         "$state" >"$dir/in.s"
     "${RV}as" -march=rv32i -mabi=ilp32 "$dir/in.s" -o "$dir/in.o"
-    "${RV}ld" -m elf32lriscv "$BUILD.o" "$dir/in.o" tables.o -o "$dir/a.elf"
+    "${RV}ld" --no-relax -m elf32lriscv "$BUILD.o" "$dir/in.o" tables.o -o "$dir/a.elf"
     local log out code iret moves want same
     # Ripes' print-string ecall (a7 = 4, used by the gcc build) also prints
     # the terminating NUL; drop NULs so both builds compare as plain text.
-    log=$(ripes --mode cli -t elf --src "$dir/a.elf" --proc "$PROC" --iret \
+    log=$(nice -n 10 ripes --mode cli -t elf --src "$dir/a.elf" --proc "$PROC" --iret \
         --timeout 600000 2>&1 | tr -d '\000')
     out=$(printf '%s\n' "$log" | head -n 1 | tr -s ' ' | sed 's/ *$//')
     code=$(printf '%s\n' "$log" | awk '/Program exited with code:/{print $NF}')

@@ -9,11 +9,14 @@
 #
 # Ripes' own assembler (pinned build) rejects .rodata and .if, so the program
 # is assembled with GNU as, linked with the generated tables, and loaded into
-# Ripes as an ELF (-t elf). The input state is inlined at assembly time from
+# Ripes as an ELF (-t elf). The link uses --no-relax: otherwise ld rewrites
+# la into gp-relative addi, but nothing here sets gp (Ripes starts it at 0),
+# so .bss/.data accesses would go to the wrong addresses.
+# The input state is inlined at assembly time from
 # STATE through the generated input.s.
 RV_PREFIX ?= riscv64-unknown-elf-
 AS := $(RV_PREFIX)as
-LD := $(RV_PREFIX)ld
+LD := $(RV_PREFIX)ld --no-relax
 ASFLAGS := -march=rv32i -mabi=ilp32
 RIPES ?= ripes
 STATE ?= 21345671111111
