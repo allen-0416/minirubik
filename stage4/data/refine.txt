@@ -1,0 +1,5 @@
+build  .text   static  state                  iret  output
+v1      884    40614  21345671111111     13316264  exit 0  R B' D2 R' B R' B' R D2 R B
+v1      884    40614  54721631111111     36411429  exit 0  B2 R' B R' D' B R2 B R B D'
+v2      880    40614  21345671111111     12146464  exit 0  R B' D2 R' B R' B' R D2 R B
+v2      880    40614  54721631111111     33212474  exit 0  B2 R' B R' D' B R2 B R B D'
