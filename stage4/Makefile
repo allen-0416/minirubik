@@ -6,13 +6,14 @@
 #   make size                        bytes per section of the linked ELF
 #   make run-ref STATE=...           the gcc -O2 reference build of
 #   make size-ref                    ../stage3/solver_ida.c, same input
+#   make gui STATE=...               gui/solver_gui.s: the RENDER = 1 build,
+#                                    flattened for the Ripes GUI editor
 #
 # Ripes' own assembler (pinned build) rejects .rodata and .if, so the program
 # is assembled with GNU as, linked with the generated tables, and loaded into
 # Ripes as an ELF (-t elf). The link uses --no-relax: otherwise ld rewrites
 # la into gp-relative addi, but nothing here sets gp (Ripes starts it at 0),
-# so .bss/.data accesses would go to the wrong addresses.
-# The input state is inlined at assembly time from
+# so .bss/.data accesses would go to the wrong addresses. The input state is inlined at assembly time from
 # STATE through the generated input.s.
 RV_PREFIX ?= riscv64-unknown-elf-
 AS := $(RV_PREFIX)as
@@ -23,7 +24,7 @@ STATE ?= 21345671111111
 PROC ?= RV32_ISS
 TIMEOUT ?= 600000
 
-.PHONY: all run size run-ref size-ref clean FORCE
+.PHONY: all run size run-ref size-ref gui clean FORCE
 
 all: solver.elf
 
@@ -73,5 +74,16 @@ size-ref: ref.elf
 		awk '$$1 ~ /^\.(text|data|bss|rodata|sdata|sbss|srodata)/ { print; \
 		if ($$1 != ".text") d += $$2 } END { print "static data:", d, "B" }'
 
+# GUI build: open gui/solver_gui.s in the Ripes editor after adding an LED
+# Matrix (Width 35, Height 25) in the I/O tab. solver_gui.elf is the same
+# build through GNU as, used to check that RENDER = 1 assembles and links.
+gui: solver.s render.s mkgui.py ../stage3/tables.s FORCE
+	@mkdir -p gui
+	python3 mkgui.py '$(STATE)' >gui/solver_gui.s
+	$(AS) $(ASFLAGS) --defsym RENDER=1 solver.s -o gui/solver_gui.o
+	$(AS) $(ASFLAGS) ../stage3/tables.s -o tables.o
+	$(LD) -m elf32lriscv gui/solver_gui.o input.o tables.o -o gui/solver_gui.elf
+	@echo "gui/solver_gui.s ready for the Ripes GUI (state $(STATE))"
+
 clean:
-	$(RM) *.o input.s solver.elf ref.elf
+	$(RM) -r *.o input.s solver.elf ref.elf gui

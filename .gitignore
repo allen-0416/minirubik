@@ -18,3 +18,5 @@ stage3/solver_ida
 stage3/practice/ex[0-9]
 stage4/input.s
 stage2/variants/
+stage4/gui/
+stage4/led/*_ripes.s
