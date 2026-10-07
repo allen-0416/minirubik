@@ -1,7 +1,7 @@
-/* my_tables.h -- 第 1、2 題你寫的函式（從 ex2_tables.c 原樣搬過來）
+/* my_tables.h -- ranks and quarter-turn tables without *, /, or %
  *
- * 用法：在 #include "../../solver.c" 之後 #include "my_tables.h"。
- * 它用到 solver.c 的 CUBIES、PERMUTATIONS、ORIENTATIONS、source、twist。
+ * From exercises 1 and 2 (ex1_rank.c, ex2_tables.c). Include after the
+ * definitions of CUBIES, PERMUTATIONS, ORIENTATIONS, source, and twist.
  */
 #ifndef MY_TABLES_H
 #define MY_TABLES_H
@@ -11,7 +11,7 @@ static const uint16_t weight[CUBIES] = {720, 120, 24, 6, 2, 1, 1};
 static uint16_t my_rank_perm(const uint8_t p[CUBIES])
 {
     uint16_t rank = 0;
-    /* TODO：雙層迴圈數逆序對，只用加法累加 weight。 */
+    /* Lehmer rank: every inversion p[j] < p[i], j > i, adds (6 - i)!. */
     for (uint8_t i = 0; i < CUBIES; ++i){
         for (uint8_t j = (uint8_t) (i + 1U); j < CUBIES; ++j){
             if (p[j] < p[i]){
@@ -26,7 +26,7 @@ static uint16_t my_rank_perm(const uint8_t p[CUBIES])
 static uint16_t my_rank_ori(const uint8_t o[CUBIES])
 {
     uint16_t rank = 0;
-    /* TODO：Horner 法，但 rank * 3 改用 shift 和加法。 */
+    /* Base 3 over o[0..5]; rank * 3 = (rank << 1) + rank. */
     for (uint8_t i = 0; i < 6; ++i){
         rank = (rank << 1) + rank + o[i];
     }
@@ -37,7 +37,8 @@ static uint16_t my_rank_ori(const uint8_t o[CUBIES])
 static uint16_t my_perm_move[3][PERMUTATIONS];
 static uint16_t my_ori_move[3][ORIENTATIONS];
 
-/* TODO：把 p 改成字典序的下一個排列；已經是最後一個時回傳 0。 */
+/* Lexicographic successor; 0 after the last permutation. The k-th
+ * permutation in this order has Lehmer rank k. */
 static int next_perm(uint8_t p[CUBIES])
 {
     int i = CUBIES - 2, j = CUBIES - 1;
@@ -67,7 +68,7 @@ static int next_perm(uint8_t p[CUBIES])
 
 }
 
-/* TODO：把 o[0..5] 加 1（三進位），再設定 o[6]（Q3）。 */
+/* Base-3 odometer over o[0..5]; o[6] keeps the twist sum 0 mod 3. */
 static void next_ori(uint8_t o[CUBIES])
 {
     int i = 5, sum = 0;
@@ -92,11 +93,8 @@ static void next_ori(uint8_t o[CUBIES])
 
 }
 
-/* TODO：填 my_perm_move 和 my_ori_move。
- * my_perm_move[face][r] = 對排列 rank r 做一次 face 的 quarter turn 後的排列 rank。
- * quarter turn 的規則看 solver.c 的 quarter_turn：result[i] 取自 source[face][i]，
- * 方向再加 twist[face][i]（這裡也不能用 % 3）。
- */
+/* my_perm_move[f][r] / my_ori_move[f][r]: rank after one quarter turn of
+ * face f. States are enumerated in rank order, so nothing is unranked. */
 static void build_move_tables(void)
 {
     uint8_t p[CUBIES] = {0, 1, 2, 3, 4, 5, 6}, o[CUBIES] = {0};

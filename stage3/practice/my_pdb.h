@@ -1,18 +1,20 @@
-/* my_pdb.h -- 第 3 題你寫的 build_pdb_scan（從 ex3_pdb.c 原樣搬過來）
+/* my_pdb.h -- pattern databases by a queue-free BFS (exercise 3)
  *
- * 用法：在 my_tables.h 之後 #include "my_pdb.h"。
+ * Include after my_tables.h.
  */
 #ifndef MY_PDB_H
 #define MY_PDB_H
 
 static uint8_t my_pdb_p[PERMUTATIONS], my_pdb_o[ORIENTATIONS];
 
-/* 回傳 x 經過一次 face quarter turn 後的 rank。is_perm 選擇哪張表。 */
+/* Rank of x after one quarter turn of face; is_perm picks the table. */
 static uint16_t turn_once(int is_perm, uint8_t face, uint16_t x)
 {
     return is_perm ? my_perm_move[face][x] : my_ori_move[face][x];
 }
 
+/* Level scan: pass d expands every entry at depth d, so no queue is
+ * needed. Stops when a pass finds nothing new. */
 static void build_pdb_scan(uint8_t pdb[], uint16_t n, int is_perm)
 {
     for (uint16_t x = 0; x < n; ++x){
